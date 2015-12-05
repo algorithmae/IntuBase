@@ -4,9 +4,9 @@
 
 //static gboolean open_file (GtkSourceBuffer *sBuf, const gchar *filename);
 
-GtkWidget makeTable(gint rows, gint cols)
+/*GtkWidget makeTable(gint rows, gint cols)
 {
-    /*GtkWidget *cell;
+    GtkWidget *cell;
     GtkWidget *returnGrid = gtk_grid_new();
         int i, j;
         for(i=0; i<rows; i++)
@@ -21,9 +21,9 @@ GtkWidget makeTable(gint rows, gint cols)
         };
 
 
-    //gtk_grid_attach(returnGrid, cell, 0, 0, 1, 1)*/
+    //gtk_grid_attach(returnGrid, cell, 0, 0, 1, 1)
 
-}
+}*/
 
 void render()
 {
@@ -51,6 +51,7 @@ void windowgen()
   //Pack main window
   leftPane = gtk_scrolled_window_new(NULL, NULL);
   rightPane = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+  textBuffer = gtk_text_buffer_new(NULL);
   textView = gtk_text_view_new_with_buffer(textBuffer);
 
   gtk_box_pack_start(GTK_BOX(vbox), hbox, TRUE, TRUE, 0);
@@ -59,8 +60,8 @@ void windowgen()
   gtk_box_pack_start(GTK_BOX(hbox), leftPane, TRUE, TRUE, 0);
   gtk_box_pack_start(GTK_BOX(hbox), rightPane, TRUE, TRUE, 0);
 
-  gtk_container_add(leftPane, textView);
-  gtk_box_pack_end(GTK_BOX(vbox), statusbar, TRUE, TRUE, 0);
+  gtk_container_add(GTK_CONTAINER(leftPane), textView);
+  //gtk_box_pack_end(GTK_BOX(vbox), statusbar, TRUE, TRUE, 0);
 
 
 }

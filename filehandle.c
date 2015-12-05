@@ -14,7 +14,7 @@ void LoadFile(char *fname)
     {
         /* create file selection dialog */
         GtkWidget *dialog = gtk_file_chooser_dialog_new("Open File...",
-                                      NULL,
+                                      GTK_WINDOW(window),
                                       GTK_FILE_CHOOSER_ACTION_OPEN,
                                       ("Cancel"),
                                       GTK_RESPONSE_CANCEL,
@@ -112,7 +112,7 @@ void SaveFile()
 
     if(!fname)
     {
-	GtkWidget *dialog = gtk_file_chooser_dialog_new("Save File As...",
+	GtkWidget *dialog = gtk_file_chooser_dialog_new("Save File...",
                                       NULL,
                                       GTK_FILE_CHOOSER_ACTION_SAVE,
                                       ("Cancel"),
@@ -123,7 +123,7 @@ void SaveFile()
 	int resp = gtk_dialog_run(GTK_DIALOG(dialog));
 	if(resp == GTK_RESPONSE_OK) {
 	    fname = g_strdup(
-		gtk_file_selection_get_filename(GTK_FILE_SELECTION(dialog)));
+		gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog)));
 	    gtk_widget_destroy(dialog);
 	} else {
 	    gtk_widget_destroy(dialog);
@@ -191,12 +191,19 @@ void SaveFile()
 
 void SaveFileAs()
 {
-    GtkWidget *dialog = gtk_file_selection_new("Save File As...");
+    GtkWidget *dialog = gtk_file_chooser_dialog_new("Save File...",
+                                      NULL,
+                                      GTK_FILE_CHOOSER_ACTION_SAVE,
+                                      ("Cancel"),
+                                      GTK_RESPONSE_CANCEL,
+                                      ("Save"),
+                                      GTK_RESPONSE_ACCEPT,
+                                      NULL);
 	int resp = gtk_dialog_run(GTK_DIALOG(dialog));
 	if(resp == GTK_RESPONSE_OK)
 	{
 	    filename = g_strdup(
-		gtk_file_selection_get_filename(GTK_FILE_SELECTION(dialog)));
+		gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog)));
 	    gtk_widget_destroy(dialog);
 	}
 	else
@@ -205,3 +212,5 @@ void SaveFileAs()
 	}
     SaveFile();
 }
+
+

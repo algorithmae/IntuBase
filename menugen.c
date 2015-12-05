@@ -8,7 +8,7 @@ void menugen()
   window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
   gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
   gtk_window_set_default_size(GTK_WINDOW(window), 700, 500);
-  gtk_window_set_title(GTK_WINDOW(window), "IntuBase version 0.4");
+  gtk_window_set_title(GTK_WINDOW(window), "IntuBase version 0.5");
 
   //Create and position boxes
   vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);

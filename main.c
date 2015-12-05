@@ -16,7 +16,7 @@ void connect_signals()
         G_CALLBACK(render), NULL);
 
     g_signal_connect(G_OBJECT(saveMi), "activate",
-        G_CALLBACK(SaveFile), NULL);
+        G_CALLBACK(SaveFileAs), NULL);
     g_signal_connect(G_OBJECT(openMi), "activate",
         G_CALLBACK(LoadFile), NULL);
 

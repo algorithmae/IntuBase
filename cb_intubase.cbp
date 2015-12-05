@@ -38,8 +38,17 @@
 		</Linker>
 		<Unit filename="filehandle.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
-		<Unit filename="filehandle.h" />
+		<Unit filename="filehandle.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="filehandle2.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="filehandle2.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
