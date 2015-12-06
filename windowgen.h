@@ -10,10 +10,14 @@
 #include <gtksourceview/gtksourcelanguagemanager.h>
 */
 
-static gboolean on_draw_event(GtkWidget *widget, cairo_t *cr,
+void drawCell();
+void drawTable(GArray tableArray, cairo_t *cr);
+void textToTable(gchar* contents);
+
+gboolean on_draw_event(GtkWidget *widget, cairo_t *cr,
     gpointer user_data);
 
-static void do_drawing(cairo_t *);
+void do_drawing(cairo_t *);
 
 void windowgen();
 
