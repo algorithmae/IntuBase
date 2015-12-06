@@ -25,23 +25,65 @@
 
 }*/
 
+static gboolean on_draw_event(GtkWidget *widget, cairo_t *cr,
+    gpointer user_data)
+{
+  do_drawing(cr);
+
+  return FALSE;
+}
+
+static void do_drawing(cairo_t *cr)
+{
+  cairo_set_source_rgb(cr, 0, 0, 0);
+  cairo_select_font_face(cr, "Sans", CAIRO_FONT_SLANT_NORMAL,
+      CAIRO_FONT_WEIGHT_NORMAL);
+  cairo_set_font_size(cr, 40.0);
+
+  cairo_move_to(cr, 10.0, 50.0);
+  cairo_show_text(cr, "Disziplin ist Macht.");
+}
+
 void render()
 {
     //GtkWidget *Table1 = makeTable(5,5);
 
     GtkWidget *windowGenerated = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     GtkWidget *windowBox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-    GtkWidget *scrolledWindow = gtk_scrolled_window_new(NULL, NULL);
+    GtkWidget *drawingArea = gtk_drawing_area_new();
 
     gtk_container_add(GTK_CONTAINER(windowGenerated), windowBox);
-    gtk_box_pack_start(GTK_BOX(windowBox), scrolledWindow, 1,1,1);
+    gtk_box_pack_start(GTK_BOX(windowBox), drawingArea, 1,1,1);
+
+     g_signal_connect(G_OBJECT(drawingArea), "draw",
+      G_CALLBACK(on_draw_event), NULL);
 
 
-    gtk_window_set_title (GTK_WINDOW (windowGenerated), "Hello World");
+
+    /*GdkWindow *windowGenerated;
+    GdkWindowAttr attributes;
+    gint attributes_mask;
+    GMainLoop *mainloop;
+    attributes.window_type = GDK_WINDOW_TOPLEVEL;
+    attributes.width = 400;
+    attributes.height = 400;
+    attributes.wclass = GDK_INPUT_OUTPUT;
+    //attributes_mask = GDK_WA_COLORMAP;
+    windowGenerated = gdk_window_new(NULL, &attributes, attributes_mask);
+    gdk_window_show(windowGenerated);
+    g_main_run (mainloop);
+    */
+    gtk_window_set_default_size(GTK_WINDOW(window), 400, 90);
+    gtk_window_set_title (GTK_WINDOW (windowGenerated), "Rendered SQL");
     gtk_window_set_position (GTK_WINDOW (windowGenerated), GTK_WIN_POS_CENTER);
-    gtk_widget_realize (windowGenerated);
 
+
+
+    gtk_widget_realize (windowGenerated);
     gtk_widget_show_all (windowGenerated);
+
+
+    //gdk_cairo_create(GdkWindow(windowGenerated));
 
 
 }

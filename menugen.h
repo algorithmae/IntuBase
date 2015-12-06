@@ -11,6 +11,7 @@ void menugen();
   GtkWidget *menubar;
   GtkWidget *fileMenu;
   GtkWidget *fileMi; //fileMenuItem
+    GtkWidget *newMi;
     GtkWidget *saveMi;
     GtkWidget *openMi;
     GtkWidget *quitMi; //quitMenuItem
