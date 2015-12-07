@@ -32,6 +32,7 @@ GtkWidget *textView;
 GtkWidget *textView2;
 GtkTextBuffer *textBuffer;
 GtkWidget *statusbar;
+GQueue *tableQ;
 
 
 #endif // WINDOWGEN_H_INCLUDED
