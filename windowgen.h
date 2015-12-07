@@ -10,8 +10,9 @@
 #include <gtksourceview/gtksourcelanguagemanager.h>
 */
 
+void updateEditBuffer();
 void drawCell();
-void drawTable(GArray tableArray, cairo_t *cr);
+void drawTable(GQueue *tableQ, cairo_t *cr);
 void textToTable(gchar* contents);
 
 gboolean on_draw_event(GtkWidget *widget, cairo_t *cr,
@@ -23,11 +24,12 @@ void windowgen();
 
 void render();
 
-
+GtkTextBuffer *editBuffer;
 
 GtkWidget *leftPane;
 GtkWidget *rightPane;
 GtkWidget *textView;
+GtkWidget *textView2;
 GtkTextBuffer *textBuffer;
 GtkWidget *statusbar;
 

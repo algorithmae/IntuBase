@@ -7,17 +7,28 @@
 gint mainRows = 0;
 gint mainCols = 0;
 
+void updateEditBuffer()
+{
+    gchar *tempStr;
+    GtkTextIter start, end;
+    gtk_text_buffer_get_start_iter (textBuffer, &start);
+    gtk_text_buffer_get_end_iter (textBuffer, &end);
+    tempStr = gtk_text_buffer_get_text (textBuffer, &start, &end, FALSE);
+    gtk_text_buffer_set_text(editBuffer, tempStr, -1);
+    g_free(tempStr);
+}
+
 void drawCell(){}
 
-void drawTable(GArray tableArray, cairo_t *cr)
+void drawTable(GQueue *tableQ, cairo_t *cr)
 {
     //Create first row
-    gint i;
+    guint i;
     gchar* tempStr;
-    while(i<tableArray.len)
+    while(i<g_queue_get_length(tableQ))
     {
 
-        tempStr = tableArray.data[i];
+        tempStr = g_queue_pop_head(tableQ);
         cairo_show_text(cr, tempStr);
         i++;
         cairo_move_to(cr, 0, (i*20));
@@ -73,27 +84,25 @@ void do_drawing(cairo_t *cr)
   cairo_set_source_rgb(cr, 0, 0, 0);
 
       //Get buffer contents
-    gchar* contents;
-    GtkTextIter start, end;
-    gtk_text_buffer_get_start_iter (textBuffer, &start);
-    gtk_text_buffer_get_end_iter (textBuffer, &end);
-    contents = gtk_text_buffer_get_text (textBuffer, &start, &end, FALSE);
+      //updateEditBuffer();
+    //editBuffer = textBuffer;
+    //gchar* contents;
 
-    //Init array
-    GArray *tableArray;
-    gint i;
-    tableArray = g_array_new(FALSE, FALSE, sizeof(contents));
+
+
 
     //String to array
-    char *token = strtok(contents, " ");
+    /*char *token = strtok(contents, " ");
     while (token)
     {
-        g_array_append_val(tableArray, token);
+        g_queue_push_head(tableQ, token);
         token=strtok(NULL, " ");
-    }
+    }*/
+
+
 
     //Table drawing
-    drawTable(*tableArray, cr);
+//    drawTable(tableQ, cr);
 
     /*
         Take input text, space delimited.
@@ -137,9 +146,42 @@ void render()
     //GtkWidget *Table1 = makeTable(5,5);
 
     //Init array
+    updateEditBuffer();
+
+    gchar *tempStr;
+    gchar counterChar;
+    GtkTextIter start, end, counter;
+    gtk_text_buffer_get_start_iter (editBuffer, &start);
+    gtk_text_buffer_get_start_iter (editBuffer, &counter);
+    gtk_text_buffer_get_end_iter (editBuffer, &end);
+    //tempStr = gtk_text_buffer_get_text (textBuffer, &start, &end, FALSE);
+
+    gtk_text_iter_forward_word_end(&counter);
+    //gtk_text_buffer_get_start_iter (editBuffer, &start);
+    //gtk_text_buffer_get_end_iter (editBuffer, &end);
+    //gtk_text_buffer_insert(editBuffer, &counter, "f", -1);
+
+    gtk_text_buffer_delete(editBuffer, &start, &counter);
+    gtk_text_buffer_get_start_iter (editBuffer, &start);
+    gtk_text_buffer_get_end_iter (editBuffer, &end);
+
+    //Init array
+    GQueue *tableQ;
+    gint i;
+    tableQ = g_queue_new();
 
 
-
+    while(!gtk_text_iter_equal(&counter, &end))
+    {
+        counterChar = gtk_text_iter_get_char (&counter);
+        if(&counterChar==" ")
+        {
+            tempStr = gtk_text_iter_get_text(&start, &counter);
+            gtk_text_buffer_delete(editBuffer, &start, &counter);
+            g_queue_push_head(tableQ, *tempStr);
+        }
+        gtk_text_iter_forward_char(&counter);
+    }
 
     //Buffer contents to Array
     //tableArray = textToTable(tableArray, contents);
@@ -192,17 +234,20 @@ void windowgen()
 {
   //Pack main window
   leftPane = gtk_scrolled_window_new(NULL, NULL);
-  rightPane = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+  rightPane = gtk_scrolled_window_new(NULL, NULL);
   textBuffer = gtk_text_buffer_new(NULL);
+  editBuffer = gtk_text_buffer_new(NULL);
   textView = gtk_text_view_new_with_buffer(textBuffer);
+  textView2 = gtk_text_view_new_with_buffer(editBuffer);
 
   gtk_box_pack_start(GTK_BOX(vbox), hbox, TRUE, TRUE, 0);
   gtk_box_set_homogeneous(GTK_BOX(hbox), TRUE);
 
-  gtk_box_pack_start(GTK_BOX(hbox), leftPane, TRUE, TRUE, 0);
-  gtk_box_pack_start(GTK_BOX(hbox), rightPane, TRUE, TRUE, 0);
+  gtk_box_pack_start(GTK_BOX(hbox), leftPane, TRUE, TRUE, 1);
+  gtk_box_pack_start(GTK_BOX(hbox), rightPane, TRUE, TRUE, 1);
 
   gtk_container_add(GTK_CONTAINER(leftPane), textView);
+  gtk_container_add(GTK_CONTAINER(rightPane), textView2);
   //gtk_box_pack_end(GTK_BOX(vbox), statusbar, TRUE, TRUE, 0);
 
 
