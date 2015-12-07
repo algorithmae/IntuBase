@@ -12,27 +12,38 @@ void updateEditBuffer()
     g_free(tempStr);
 }
 
-void drawCell(){}
+//void drawCell(){}
 
-void drawTable(GQueue *tableQ, cairo_t *cr)
+/*void drawTable(gchar* inputStr, cairo_t *cr)
 {
     //Create first row
-    guint i;
-    gchar* tempStr;
-    while(i<g_queue_get_length(tableQ))
+    //guint i;
+    cairo_select_font_face(cr, "Sans", CAIRO_FONT_SLANT_NORMAL,
+      CAIRO_FONT_WEIGHT_NORMAL);
+  cairo_set_font_size(cr, 12.0);
+    cairo_set_source_rgb(cr, 0, 0, 0);
+        //Create first row
+    //guint i;
+    //gchar* tempStr;
+    //>>>>>>tempStr = g_queue_pop_head(tableQ);
+    cairo_show_text(cr, inputStr);
+
+
+    //gchar* tempStr;
+    /*while(i<g_queue_get_length(tableQ))
     {
 
         tempStr = g_queue_pop_head(tableQ);
         cairo_show_text(cr, tempStr);
         i++;
         cairo_move_to(cr, 0, (i*20));
-    }
+    }*/
     //cairo_show_text(cr, contents);
     //Create second row
 
     //Create additional rows
 
-}
+//}
 
 gboolean on_draw_event(GtkWidget *widget, cairo_t *cr,
     gpointer user_data)
@@ -44,13 +55,100 @@ gboolean on_draw_event(GtkWidget *widget, cairo_t *cr,
 
 void do_drawing(cairo_t *cr)
 {
-     cairo_select_font_face(cr, "Sans", CAIRO_FONT_SLANT_NORMAL,
-      CAIRO_FONT_WEIGHT_NORMAL);
-  cairo_set_font_size(cr, 12.0);
+
+    struct tableStr
+    {
+        gchar* tableName;
+        gchar* tableVar1;
+        gchar* tableVar2;
+    } tableStr1;
+    cairo_select_font_face(cr, "Sans", CAIRO_FONT_SLANT_NORMAL,
+        CAIRO_FONT_WEIGHT_NORMAL);
+    cairo_set_font_size(cr, 12.0);
     cairo_set_source_rgb(cr, 0, 0, 0);
+    cairo_move_to(cr, 0.0, 0.0);
+    //cairo_show_text(cr, "Test");
+
+    gint tableNumber=0;
+    gchar *tempStr;
+    GtkTextIter start, end, counter;
+    gtk_text_buffer_get_start_iter (editBuffer, &start);
+    gtk_text_buffer_get_start_iter (editBuffer, &counter);
+    gtk_text_buffer_get_end_iter (editBuffer, &end);
+
+
+        gtk_text_iter_forward_word_end(&counter);
+        tempStr=gtk_text_buffer_get_text(editBuffer, &start, &counter, FALSE);
+        gtk_text_buffer_get_start_iter (editBuffer, &start);
+        gtk_text_buffer_get_end_iter (editBuffer, &end);
+        if (strcmp(tempStr, "CREATE")==0)
+        {
+
+            gtk_text_buffer_delete(editBuffer, &start, &counter);
+            gtk_text_buffer_get_start_iter (editBuffer, &start);
+            gtk_text_buffer_get_end_iter (editBuffer, &end);
+            gtk_text_iter_forward_word_end(&counter);
+            gtk_text_iter_forward_word_end(&counter);
+            tempStr=gtk_text_buffer_get_text(editBuffer, &start, &counter, FALSE);
+            tableStr1.tableName = tempStr;
+            //gtk_text_buffer_delete(editBuffer, &start, &counter);
+
+                gtk_text_buffer_get_start_iter (editBuffer, &start);
+                gtk_text_buffer_get_end_iter (editBuffer, &end);
+
+                cairo_set_source_rgb(cr, 1, 1, 1);
+                cairo_rectangle(cr, 0.0, (tableNumber*120), 100.0, 100.0);
+                cairo_stroke_preserve(cr);
+                cairo_fill(cr);
+                cairo_set_source_rgb(cr, 0, 0, 0);
+                cairo_move_to(cr, 2.0, (tableNumber*120)+15.0);
+                cairo_show_text(cr, tableStr1.tableName);
+                tableNumber++;
+
+
+            }
+
+            //gtk_text_iter_forward_word_end(&counter);
+            gtk_text_buffer_get_start_iter (editBuffer, &start);
+            gtk_text_buffer_get_end_iter (editBuffer, &end);
+            //gtk_text_buffer_delete(editBuffer, &start, &counter);
+            gtk_text_buffer_get_start_iter (editBuffer, &start);
+            gtk_text_buffer_get_end_iter (editBuffer, &end);
+            //gtk_text_iter_forward_word_end(&counter);
+        tempStr=gtk_text_buffer_get_text(editBuffer, &start, &counter, FALSE);
+        gtk_text_buffer_get_start_iter (editBuffer, &start);
+        gtk_text_buffer_get_end_iter (editBuffer, &end);
+
+
+    while(!gtk_text_iter_equal(&counter, &end))
+    {
+
+
+
+
+        //(tableQ, *tempStr);
+
+        //>>>>>>gtk_text_buffer_delete(editBuffer, &start, &counter);
+        gtk_text_buffer_get_start_iter (editBuffer, &start);
+        gtk_text_buffer_get_end_iter (editBuffer, &end);
+
+        //counterChar = gtk_text_iter_get_char (&counter);
+        /*if(&counterChar==" ")
+        {
+            tempStr = gtk_text_iter_get_text(&start, &counter);
+            gtk_text_buffer_delete(editBuffer, &start, &counter);
+            g_queue_push_head(tableQ, *tempStr);
+        }
+        gtk_text_iter_forward_char(&counter);*/
+    }
+
+    //DRAW STUFF
+
+
+
         //Create first row
     //guint i;
-    gchar* tempStr;
+    //gchar* tempStr;
     //>>>>>>tempStr = g_queue_pop_head(tableQ);
     //>>>>>>cairo_show_text(cr, tempStr);
     /*while(i<g_queue_get_length(tableQ))
@@ -118,49 +216,9 @@ void render()
     //Init array
     updateEditBuffer();
 
-    gchar *tempStr;
-    //gchar counterChar;
-    GtkTextIter start, end, counter;
-    gtk_text_buffer_get_start_iter (editBuffer, &start);
-    gtk_text_buffer_get_start_iter (editBuffer, &counter);
-    gtk_text_buffer_get_end_iter (editBuffer, &end);
-    //tempStr = gtk_text_buffer_get_text (textBuffer, &start, &end, FALSE);
-
-    //gtk_text_iter_forward_word_end(&counter);
 
 
-    //Init array
-
-    guint i=0;
-    tableQ = g_queue_new();
-
-
-    while(!gtk_text_iter_equal(&counter, &end))
-    {
-        gtk_text_iter_forward_word_end(&counter);
-        tempStr=gtk_text_buffer_get_text(editBuffer, &start, &counter, FALSE);
-        gtk_text_buffer_get_start_iter (editBuffer, &start);
-        gtk_text_buffer_get_end_iter (editBuffer, &end);
-
-
-
-        g_queue_push_head(tableQ, *tempStr);
-
-        //gtk_text_buffer_delete(editBuffer, &start, &counter);
-        gtk_text_buffer_get_start_iter (editBuffer, &start);
-        gtk_text_buffer_get_end_iter (editBuffer, &end);
-
-        //counterChar = gtk_text_iter_get_char (&counter);
-        /*if(&counterChar==" ")
-        {
-            tempStr = gtk_text_iter_get_text(&start, &counter);
-            gtk_text_buffer_delete(editBuffer, &start, &counter);
-            g_queue_push_head(tableQ, *tempStr);
-        }
-        gtk_text_iter_forward_char(&counter);*/
-    }
-
-    while(i<g_queue_get_length(tableQ))
+    /*while(i<g_queue_get_length(tableQ))
     {
         gchar *tempStr2;
         tempStr2=g_queue_pop_head_link(tableQ);
@@ -175,7 +233,7 @@ void render()
         gtk_text_buffer_get_start_iter (editBuffer, &start);
         gtk_text_buffer_get_end_iter (editBuffer, &end);
         i++;
-    }
+    }*/
 
 
 
@@ -193,6 +251,7 @@ void render()
 
      g_signal_connect(G_OBJECT(drawingArea), "draw",
       G_CALLBACK(on_draw_event), NULL);
+
 
 
     //Legacy

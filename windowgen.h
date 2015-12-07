@@ -11,9 +11,9 @@
 */
 
 void updateEditBuffer();
-void drawCell();
-void drawTable(GQueue *tableQ, cairo_t *cr);
-void textToTable(gchar* contents);
+//void drawCell();
+//void drawTable(gchar* inputStr, cairo_t *cr);
+//void textToTable(gchar* contents);
 
 gboolean on_draw_event(GtkWidget *widget, cairo_t *cr,
     gpointer user_data);
@@ -32,7 +32,7 @@ GtkWidget *textView;
 GtkWidget *textView2;
 GtkTextBuffer *textBuffer;
 GtkWidget *statusbar;
-GQueue *tableQ;
+gchar* sharedStr;
 
 
 #endif // WINDOWGEN_H_INCLUDED
